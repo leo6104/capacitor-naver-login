@@ -22,9 +22,9 @@ public class Naver extends Plugin {
         this.mOAuthLoginModule = OAuthLogin.getInstance();
         this.mOAuthLoginModule.init(
                 this.getActivity(),
-                this.getConfigValue("naver_client_id").toString(),
-                this.getConfigValue("naver_client_secret").toString(),
-                this.getConfigValue("naver_client_name").toString()
+                (String) getConfigValue("OAUTH_CLIENT_ID"),
+                (String) getConfigValue("OAUTH_CLIENT_SECRET"),
+                (String) getConfigValue("OAUTH_CLIENT_NAME")
         );
     }
 

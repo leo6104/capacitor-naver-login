@@ -60,5 +60,6 @@
   },
   "bugs": {
     "url": "https://github.com/leo6104/capacitor-naver-login/issues"
-  }
+  },
+  "dependencies": {}
 }

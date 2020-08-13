@@ -19,7 +19,7 @@ export class NaverWeb extends WebPlugin implements NaverPlugin {
     return {
       accessToken: 'Not Implemented Yet',
       refreshToken: 'Not Implemented Yet',
-      expires: 'Not Implemented Yet',
+      expiresAt: 'Not Implemented Yet',
       tokenType: 'Barear'
     };
   }
