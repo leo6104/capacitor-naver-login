@@ -13,4 +13,5 @@ Pod::Spec.new do |s|
   s.source_files = 'ios/Plugin/**/*.{swift,h,m,c,cc,mm,cpp}'
   s.ios.deployment_target  = '12.0'
   s.dependency 'Capacitor'
+  s.dependency 'naveridlogin-sdk-ios', '~> 4.1.3'
 end

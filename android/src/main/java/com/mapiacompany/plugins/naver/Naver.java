@@ -85,8 +85,8 @@ public class Naver extends Plugin {
      * OAuth Login 실패 성공에 따른 행동을 핸들링하는 클래스
      */
     private class LoginHandler extends OAuthLoginHandler {
-        private PluginCall mCall;
-        private Context mContext;
+        private final PluginCall mCall;
+        private final Context mContext;
 
         LoginHandler(Context context, PluginCall call) {
             this.mContext = context;
