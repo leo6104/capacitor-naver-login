@@ -55,33 +55,42 @@ public class Naver: CAPPlugin {
             self.instance?.requestThirdPartyLogin();
         }
     }
+
+    @objc func logout(_ call: CAPPluginCall) {
+        signInCall = call;
+        DispatchQueue.main.async {
+            self.instance?.requestDeleteToken();
+        }
+    }
 }
 
 extension Naver: NaverThirdPartyLoginConnectionDelegate {
     // 로그인에 성공한 경우 호출
     public func oauth20ConnectionDidFinishRequestACTokenWithAuthCode() {
-        var userData: [String: Any] = [
+        let userData: [String: Any] = [
             "accessToken": instance?.accessToken,
             "refreshToken": instance?.refreshToken,
-            "expiresAt": instance?.accessTokenExpireDate,
             "tokenType": instance?.tokenType
         ];
-        signInCall?.resolve(userData);
+        signInCall!.resolve(userData);
     }
 
     // referesh token
     public func oauth20ConnectionDidFinishRequestACTokenWithRefreshToken() {
-        <#code#>
+        let userData: [String: Any] = [
+            "accessToken": instance?.accessToken,
+            "refreshToken": instance?.refreshToken,
+            "tokenType": instance?.tokenType
+        ];
+        signInCall!.resolve(userData);
     }
 
-    // 로그아웃
     public func oauth20ConnectionDidFinishDeleteToken() {
-        <#code#>
+        signInCall!.resolve();
     }
 
     // 모든 error
     public func oauth20Connection(_ oauthConnection: NaverThirdPartyLoginConnection!, didFailWithError error: Error!) {
-        <#code#>
-        signInCall?.reject(error.localizedDescription);
+        signInCall!.reject(error.localizedDescription);
     }
 }
