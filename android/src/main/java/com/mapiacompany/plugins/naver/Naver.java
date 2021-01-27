@@ -55,7 +55,7 @@ public class Naver extends Plugin {
         String accessToken = this.mOAuthLoginModule.refreshAccessToken(context);
         JSObject result = new JSObject();
         result.put("accessToken", accessToken);
-        call.success(result);
+        call.resolve(result);
     }
 
     @PluginMethod
@@ -63,7 +63,7 @@ public class Naver extends Plugin {
         OAuthLoginState state = this.mOAuthLoginModule.getState(this.getActivity());
         JSObject result = new JSObject();
         result.put("state", state.name());
-        call.success(result);
+        call.resolve(result);
     }
 
     @PluginMethod

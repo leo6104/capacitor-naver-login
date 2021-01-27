@@ -1,5 +1,6 @@
 import Foundation
 import Capacitor
+import NaverThirdPartyLogin
 
 /**
  * Please read the Capacitor iOS Plugin Development Guide
@@ -7,11 +8,15 @@ import Capacitor
  */
 @objc(Naver)
 public class Naver: CAPPlugin {
+    private let naverLogin = NaverThirdPartyLoginConnection.getSharedInstance()
 
-    @objc func echo(_ call: CAPPluginCall) {
+    @objc func login(_ call: CAPPluginCall) {
         let value = call.getString("value") ?? ""
-        call.success([
-            "value": value
-        ])
+
+        DispatchQueue.main.async {
+            call.resolve([
+                "value": value
+            ])
+        }
     }
 }

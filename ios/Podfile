@@ -9,6 +9,7 @@ end
 
 target 'Plugin' do
   capacitor_pods
+  pod 'naveridlogin-sdk-ios'
 end
 
 target 'PluginTests' do
