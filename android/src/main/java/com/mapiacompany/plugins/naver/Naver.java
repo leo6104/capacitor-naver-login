@@ -40,12 +40,12 @@ public class Naver extends Plugin {
         boolean isSuccessDeleteToken = this.mOAuthLoginModule.logoutAndDeleteToken(context);
         try {
             if (isSuccessDeleteToken) {
-                call.success();
+                call.resolve();
             } else {
-                call.error(this.mOAuthLoginModule.getLastErrorDesc(context));
+                call.reject(this.mOAuthLoginModule.getLastErrorDesc(context));
             }
         } catch (Exception e) {
-            call.error(e.getMessage(), e);
+            call.reject(e.getMessage(), e);
         }
     }
 
@@ -108,16 +108,16 @@ public class Naver extends Plugin {
                     resultObject.put("tokenType", tokenType);
 
                     // Result Callback
-                    this.mCall.success(resultObject);
+                    this.mCall.resolve(resultObject);
                 } else {
                     String errorCode = mOAuthLoginModule.getLastErrorCode(this.mContext).getCode();
                     String errorDescription = mOAuthLoginModule.getLastErrorDesc(this.mContext);
 
                     // Result Callback
-                    this.mCall.error(errorDescription);
+                    this.mCall.reject(errorDescription);
                 }
             } catch (Exception e) {
-                this.mCall.error(e.getMessage());
+                this.mCall.reject(e.getMessage());
             }
         }
     }
