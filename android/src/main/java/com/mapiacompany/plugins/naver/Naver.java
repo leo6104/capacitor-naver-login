@@ -3,15 +3,16 @@ package com.mapiacompany.plugins.naver;
 import android.content.Context;
 
 import com.getcapacitor.JSObject;
-import com.getcapacitor.NativePlugin;
 import com.getcapacitor.Plugin;
 import com.getcapacitor.PluginCall;
+import com.getcapacitor.PluginConfig;
 import com.getcapacitor.PluginMethod;
+import com.getcapacitor.annotation.CapacitorPlugin;
 import com.nhn.android.naverlogin.OAuthLogin;
 import com.nhn.android.naverlogin.OAuthLoginHandler;
 import com.nhn.android.naverlogin.data.OAuthLoginState;
 
-@NativePlugin
+@CapacitorPlugin(name = "Naver")
 public class Naver extends Plugin {
     private OAuthLogin mOAuthLoginModule;
 
@@ -20,18 +21,19 @@ public class Naver extends Plugin {
 
         // Initialize Naver OAuth Module
         this.mOAuthLoginModule = OAuthLogin.getInstance();
+        PluginConfig config = getConfig();
         this.mOAuthLoginModule.init(
                 this.getActivity(),
-                (String) getConfigValue("OAUTH_CLIENT_ID"),
-                (String) getConfigValue("OAUTH_CLIENT_SECRET"),
-                (String) getConfigValue("OAUTH_CLIENT_NAME")
+                (String) config.getString("OAUTH_CLIENT_ID"),
+                (String) config.getString("OAUTH_CLIENT_SECRET"),
+                (String) config.getString("OAUTH_CLIENT_NAME")
         );
     }
 
     @PluginMethod
     public void logout(PluginCall call) {
         this.mOAuthLoginModule.logout(this.getActivity());
-        call.success();
+        call.resolve();
     }
 
     @PluginMethod
