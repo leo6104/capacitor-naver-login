@@ -7,7 +7,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-import { registerWebPlugin, WebPlugin } from '@capacitor/core';
+import { registerPlugin, WebPlugin } from '@capacitor/core';
 export class NaverWeb extends WebPlugin {
     constructor() {
         super({
@@ -48,5 +48,5 @@ export class NaverWeb extends WebPlugin {
 }
 const Naver = new NaverWeb();
 export { Naver };
-registerWebPlugin(Naver);
+registerPlugin('Naver', { web: Naver });
 //# sourceMappingURL=web.js.map

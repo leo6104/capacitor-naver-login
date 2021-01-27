@@ -49,10 +49,12 @@ var capacitorPlugin = (function (exports, core) {
         }
     }
     const Naver = new NaverWeb();
-    core.registerWebPlugin(Naver);
+    core.registerPlugin('Naver', { web: Naver });
 
     exports.Naver = Naver;
     exports.NaverWeb = NaverWeb;
+
+    Object.defineProperty(exports, '__esModule', { value: true });
 
     return exports;
 

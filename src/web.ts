@@ -1,4 +1,4 @@
-import { registerWebPlugin, WebPlugin } from '@capacitor/core';
+import { registerPlugin, WebPlugin } from '@capacitor/core';
 import { NaverPlugin } from './definitions';
 
 declare const naver: any;
@@ -41,4 +41,4 @@ const Naver = new NaverWeb();
 
 export { Naver };
 
-registerWebPlugin(Naver);
+registerPlugin('Naver', { web: Naver });
