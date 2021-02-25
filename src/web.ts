@@ -37,8 +37,7 @@ export class NaverWeb extends WebPlugin implements NaverPlugin {
   }
 }
 
-const Naver = new NaverWeb();
 
-export { Naver };
-
-registerPlugin('Naver', { web: Naver });
+export const Naver = /*#__PURE__*/ registerPlugin<NaverPlugin>("Naver", {
+  web: new NaverWeb()
+});
