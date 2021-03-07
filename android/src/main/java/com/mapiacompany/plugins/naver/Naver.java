@@ -23,7 +23,7 @@ public class Naver extends Plugin {
         this.mOAuthLoginModule = OAuthLogin.getInstance();
         PluginConfig config = getConfig();
         this.mOAuthLoginModule.init(
-                this.getActivity(),
+                getActivity(),
                 (String) config.getString("OAUTH_CLIENT_ID"),
                 (String) config.getString("OAUTH_CLIENT_SECRET"),
                 (String) config.getString("OAUTH_CLIENT_NAME")
@@ -32,13 +32,13 @@ public class Naver extends Plugin {
 
     @PluginMethod
     public void logout(PluginCall call) {
-        this.mOAuthLoginModule.logout(this.getActivity());
+        this.mOAuthLoginModule.logout(getActivity());
         call.resolve();
     }
 
     @PluginMethod
     public void logoutAndDeleteToken(PluginCall call) {
-        Context context = this.getContext();
+        Context context = getContext();
         boolean isSuccessDeleteToken = this.mOAuthLoginModule.logoutAndDeleteToken(context);
         try {
             if (isSuccessDeleteToken) {
@@ -53,7 +53,7 @@ public class Naver extends Plugin {
 
     @PluginMethod
     public void refreshAccessToken(PluginCall call) {
-        Context context = this.getContext();
+        Context context = getContext();
         String accessToken = this.mOAuthLoginModule.refreshAccessToken(context);
         JSObject result = new JSObject();
         result.put("accessToken", accessToken);
@@ -70,14 +70,15 @@ public class Naver extends Plugin {
 
     @PluginMethod
     public void login(final PluginCall call) {
-        this.getActivity().runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                Naver.this.mOAuthLoginModule.startOauthLoginActivity(
-                        Naver.this.getActivity(),
-                        new LoginHandler(Naver.this.getActivity(), call)
-                );
-            }
+        bridge.saveCall(call);
+        getActivity().runOnUiThread(new Runnable() {
+          @Override
+          public void run() {
+            Naver.this.mOAuthLoginModule.startOauthLoginActivity(
+              Naver.this.getActivity(),
+              new LoginHandler(call.getCallbackId())
+            );
+          }
         });
     }
 
@@ -85,22 +86,21 @@ public class Naver extends Plugin {
      * OAuth Login 실패 성공에 따른 행동을 핸들링하는 클래스
      */
     private class LoginHandler extends OAuthLoginHandler {
-        private final PluginCall mCall;
-        private final Context mContext;
-
-        LoginHandler(Context context, PluginCall call) {
-            this.mContext = context;
-            this.mCall = call;
+        String callbackId;
+        LoginHandler(String callbackId) {
+          this.callbackId = callbackId;
         }
 
         @Override
         public void run(boolean isSuccess) {
+            Context mContext = getContext();
+            PluginCall call = bridge.getSavedCall(callbackId);
             JSObject resultObject = new JSObject();
             try {
                 if (isSuccess) {
-                    String accessToken = mOAuthLoginModule.getAccessToken(this.mContext);
-                    String refreshToken = mOAuthLoginModule.getRefreshToken(this.mContext);
-                    long expiresAt = mOAuthLoginModule.getExpiresAt(this.mContext);
+                    String accessToken = mOAuthLoginModule.getAccessToken(mContext);
+                    String refreshToken = mOAuthLoginModule.getRefreshToken(mContext);
+                    long expiresAt = mOAuthLoginModule.getExpiresAt(mContext);
                     String tokenType = mOAuthLoginModule.getTokenType(mContext);
 
                     // Result JSON 생성
@@ -110,16 +110,18 @@ public class Naver extends Plugin {
                     resultObject.put("tokenType", tokenType);
 
                     // Result Callback
-                    this.mCall.resolve(resultObject);
+                    call.resolve(resultObject);
                 } else {
-                    String errorCode = mOAuthLoginModule.getLastErrorCode(this.mContext).getCode();
-                    String errorDescription = mOAuthLoginModule.getLastErrorDesc(this.mContext);
+                    String errorCode = mOAuthLoginModule.getLastErrorCode(mContext).getCode();
+                    String errorDescription = mOAuthLoginModule.getLastErrorDesc(mContext);
 
                     // Result Callback
-                    this.mCall.reject(errorDescription);
+                    call.reject(errorDescription);
                 }
             } catch (Exception e) {
-                this.mCall.reject(e.getMessage());
+                call.reject(e.getMessage());
+            } finally {
+                bridge.releaseCall(call);
             }
         }
     }
