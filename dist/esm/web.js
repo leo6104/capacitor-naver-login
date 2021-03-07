@@ -7,14 +7,8 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-import { registerPlugin, WebPlugin } from '@capacitor/core';
-export class NaverWeb extends WebPlugin {
-    constructor() {
-        super({
-            name: 'Naver',
-            platforms: ['web'],
-        });
-    }
+import { registerPlugin } from '@capacitor/core';
+export class NaverWeb {
     getState() {
         return __awaiter(this, void 0, void 0, function* () {
             return { state: 'Not Implemeneted Yet' };

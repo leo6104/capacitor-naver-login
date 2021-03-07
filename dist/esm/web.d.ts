@@ -1,7 +1,5 @@
-import { WebPlugin } from '@capacitor/core';
 import { NaverPlugin } from './definitions';
-export declare class NaverWeb extends WebPlugin implements NaverPlugin {
-    constructor();
+export declare class NaverWeb implements NaverPlugin {
     getState(): Promise<{
         state: string;
     }>;

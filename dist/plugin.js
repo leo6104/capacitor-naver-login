@@ -10,13 +10,7 @@ var capacitorPlugin = (function (exports, core) {
             step((generator = generator.apply(thisArg, _arguments || [])).next());
         });
     };
-    class NaverWeb extends core.WebPlugin {
-        constructor() {
-            super({
-                name: 'Naver',
-                platforms: ['web'],
-            });
-        }
+    class NaverWeb {
         getState() {
             return __awaiter(this, void 0, void 0, function* () {
                 return { state: 'Not Implemeneted Yet' };

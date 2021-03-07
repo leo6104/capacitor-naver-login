@@ -1,16 +1,7 @@
-import { registerPlugin, WebPlugin } from '@capacitor/core';
+import { registerPlugin } from '@capacitor/core';
 import { NaverPlugin } from './definitions';
 
-declare const naver: any;
-
-export class NaverWeb extends WebPlugin implements NaverPlugin {
-  constructor() {
-    super({
-      name: 'Naver',
-      platforms: ['web'],
-    });
-  }
-
+export class NaverWeb implements NaverPlugin {
   async getState() {
     return { state: 'Not Implemeneted Yet' };
   }
