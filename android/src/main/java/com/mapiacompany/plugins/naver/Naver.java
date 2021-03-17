@@ -70,13 +70,12 @@ public class Naver extends Plugin {
 
     @PluginMethod
     public void login(final PluginCall call) {
-        bridge.saveCall(call);
         getActivity().runOnUiThread(new Runnable() {
           @Override
           public void run() {
             Naver.this.mOAuthLoginModule.startOauthLoginActivity(
               Naver.this.getActivity(),
-              new LoginHandler(call.getCallbackId())
+              new LoginHandler(call)
             );
           }
         });
@@ -86,15 +85,14 @@ public class Naver extends Plugin {
      * OAuth Login 실패 성공에 따른 행동을 핸들링하는 클래스
      */
     private class LoginHandler extends OAuthLoginHandler {
-        String callbackId;
-        LoginHandler(String callbackId) {
-          this.callbackId = callbackId;
+        PluginCall call;
+        LoginHandler(PluginCall call) {
+          this.call = call;
         }
 
         @Override
         public void run(boolean isSuccess) {
             Context mContext = getContext();
-            PluginCall call = bridge.getSavedCall(callbackId);
             JSObject resultObject = new JSObject();
             try {
                 if (isSuccess) {
@@ -120,8 +118,6 @@ public class Naver extends Plugin {
                 }
             } catch (Exception e) {
                 call.reject(e.getMessage());
-            } finally {
-                bridge.releaseCall(call);
             }
         }
     }
